@@ -52,10 +52,10 @@ const IncomeExpense = () => {
     const List = ({item , index}) => {
         return (
             <View style={{flexDirection:'row',flex: 1}}>
-                <Text style={[styles.item, {flex:4,borderRightWidth:0.5}]}>{item.date}</Text>
+                <Text style={[styles.item, {flex:3.5,borderRightWidth:0.5}]}>{item.date}</Text>
                 <Text style={[styles.item, {flex:2.5,borderRightWidth:0.5}]}>{item.income}</Text>
                 <Text style={[styles.item, {flex:2.5,borderRightWidth:0.5}]}>{item.expense}</Text>
-                <TouchableOpacity style={[styles.item, {flex:1, alignItems:'center'}]} onPress={()=>openDetailScreen(index)} >
+                <TouchableOpacity style={[styles.item, {flex:1.5, alignItems:'center'}]} onPress={()=>openDetailScreen(index)} >
                     <Icon  name="arrow-dropright-circle" style={{fontSize:18}} />
                 </TouchableOpacity>
             </View>
@@ -64,29 +64,28 @@ const IncomeExpense = () => {
 
 
     const getMontIncomeExpense = direction => {
-      if (direction === 0){
-          let month;
-          let year;
-          if (currentDate.month === 0){
-              month = 11;
-              year = currentDate.year - 1;
-          } else {
-              month = currentDate.month - 1;
-              year = currentDate.year;
-           }
-          setCurrentDate({month, year:year})
-      } else {
-          let month;
-          let year;
-          if (currentDate.month === 11){
-              month = 0;
-              year = currentDate.year + 1;
-          } else {
-              month = currentDate.month + 1;
-              year = currentDate.year;
-          }
-          setCurrentDate({month, year})
-      }
+        let month;
+        let year;
+        if (direction === 0) {
+            if (currentDate.month === 0) {
+                month = 11;
+                year = currentDate.year - 1;
+            } else {
+                month = currentDate.month - 1;
+                year = currentDate.year;
+            }
+        } else {
+            if (currentDate.month === 11) {
+                month = 0;
+                year = currentDate.year + 1;
+            } else {
+                month = currentDate.month + 1;
+                year = currentDate.year;
+            }
+
+        }
+        setCurrentDate({month, year});
+
     };
 
     return (
@@ -107,10 +106,10 @@ const IncomeExpense = () => {
             </View>
 
             <View style={{flexDirection: 'row'}}>
-                <Text style={[styles.item, {flex:4,borderRightWidth:0.5}]}>Tarih</Text>
+                <Text style={[styles.item, {flex:3.5,borderRightWidth:0.5}]}>Tarih</Text>
                 <Text style={[styles.item, {flex:2.5,borderRightWidth:0.5}]}>Gelir</Text>
                 <Text style={[styles.item, {flex:2.5,borderRightWidth:0.5}]}>Gider</Text>
-                <Text style={[styles.item, {flex:1}]}>Detay</Text>
+                <Text style={[styles.item, {flex:1.5}]}>Detay</Text>
             </View>
 
             <FlatList
