@@ -16,3 +16,11 @@ wix react native navigation V3 [Here](https://github.com/wix/react-native-naviga
 react-native-ionicons [Here](https://www.npmjs.com/package/react-native-ionicons)<br />
 react-native-datepicker [Here](https://github.com/xgfe/react-native-datepicker)<br />
 moment.js [Here](https://github.com/moment/moment)<br />
+
+## Screenshots
+
+<p>
+  <img width="220" src="https://raw.githubusercontent.com/huseyiniriss/React-Native-Income-Expense/master/screenshot/2.jpeg">
+  <img width="220" src="https://raw.githubusercontent.com/huseyiniriss/React-Native-Income-Expense/master/screenshot/1.jpeg">
+  <img width="220" src="https://raw.githubusercontent.com/huseyiniriss/React-Native-Income-Expense/master/screenshot/3.jpeg">
+</p>
