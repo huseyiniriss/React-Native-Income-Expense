@@ -10,7 +10,7 @@ npm run android
 npm start
 ```
 
-## Using Libraries
+## Used Libraries
 
 wix react native navigation V3 [Here](https://github.com/wix/react-native-navigation/tree/v3)<br />
 react-native-ionicons [Here](https://www.npmjs.com/package/react-native-ionicons)<br />
