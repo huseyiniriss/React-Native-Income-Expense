@@ -17,7 +17,7 @@ react-native-ionicons [Here](https://www.npmjs.com/package/react-native-ionicons
 react-native-datepicker [Here](https://github.com/xgfe/react-native-datepicker)<br />
 moment.js [Here](https://github.com/moment/moment)<br />
 
-## Used Libraries
+## Screenshots
 
 <p>
   <img width="220" src="https://raw.githubusercontent.com/huseyiniriss/React-Native-Income-Expense/master/screenshot/2.jpeg">
