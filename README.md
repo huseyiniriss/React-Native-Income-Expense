@@ -12,6 +12,6 @@ npm start
 
 ## Using Libraries
 
-wix react native navigation V3 [Here](https://github.com/wix/react-native-navigation/tree/v3)
-react-native-ionicons [Here](https://www.npmjs.com/package/react-native-ionicons)
+wix react native navigation V3 [Here](https://github.com/wix/react-native-navigation/tree/v3)<br />
+react-native-ionicons [Here](https://www.npmjs.com/package/react-native-ionicons)<br />
 react-native-datepicker [Here](https://github.com/xgfe/react-native-datepicker)
