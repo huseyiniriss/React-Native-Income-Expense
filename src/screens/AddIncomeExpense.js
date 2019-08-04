@@ -18,14 +18,35 @@ import {
 } from 'react-native';
 import DatePicker from 'react-native-datepicker'
 import moment from "moment";
+import FlashMessage, { showMessage, hideMessage } from "react-native-flash-message";
 
 const AddIncomeExpense = () => {
 
   const [date, setDate] = React.useState(moment().format("YYYY-MM-DD"));
   const [type, setType] = React.useState(1);
+  const [description, setDescription] = React.useState('');
+  const [amount, setAmount] = React.useState(0);
+
+  const addIncomeExpense = () => {
+      if (description.length === 0 || amount === 0){
+          showSimpleMessage('Uyarı','Boş alan bırakmayınız.', 'success', {floating:true})
+      }
+  };
+
+    const showSimpleMessage = (title, msg, type = "default", props = {}) => {
+        const message = {
+            message: title,
+            description: msg,
+            icon: { icon: "auto", position: "left" },
+            type,
+            ...props,
+        };
+        showMessage(message);
+    };
 
   return (
       <View style={styles.root}>
+
         <DatePicker
             style={{width: 200, marginTop: 24}}
             date={date}
@@ -58,21 +79,25 @@ const AddIncomeExpense = () => {
 
           <TextInput
               placeholder= 'Miktar'
+              onChangeText={(text) => setAmount(text)}
               style={{height: 50, width: 200, borderWidth:0.5}}
               keyboardType={'decimal-pad'}
           />
 
           <TextInput
               placeholder='Açıklama'
+              onChangeText={(text) => setDescription(text)}
               multiline={true}
               style={{height: 100, width: 200, borderWidth:0.5, marginTop:8, textAlignVertical: 'top', marginBottom:8}}
           />
 
           <Button
-              onPress={() => {alert('kadyet')}}
+              onPress={addIncomeExpense}
               title={'KAYDET'}
               style={{height: 50, width: 200}}
+              color={'#075E54'}
           />
+          <FlashMessage position="top" style={{zIndex:9999}} animated={true} />
 </View>
   );
 };

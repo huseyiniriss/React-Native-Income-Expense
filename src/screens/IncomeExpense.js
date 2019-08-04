@@ -105,7 +105,7 @@ const IncomeExpense = () => {
                 </TouchableOpacity>
             </View>
 
-            <View style={{flexDirection: 'row'}}>
+            <View style={{flexDirection: 'row', backgroundColor:'#dddddd'}}>
                 <Text style={[styles.item, {flex:3.5,borderRightWidth:0.5}]}>Tarih</Text>
                 <Text style={[styles.item, {flex:2.5,borderRightWidth:0.5}]}>Gelir</Text>
                 <Text style={[styles.item, {flex:2.5,borderRightWidth:0.5}]}>Gider</Text>
