@@ -19,17 +19,34 @@ import {
 import DatePicker from 'react-native-datepicker'
 import moment from "moment";
 import FlashMessage, { showMessage, hideMessage } from "react-native-flash-message";
+import SqliteHelper from '../../util/SqliteHelper'
 
 const AddIncomeExpense = () => {
 
-  const [date, setDate] = React.useState(moment().format("YYYY-MM-DD"));
+  const [date, setDate] = React.useState(moment().format("DD.MM.YYYY"));
   const [type, setType] = React.useState(1);
   const [description, setDescription] = React.useState('');
   const [amount, setAmount] = React.useState(0);
+  const [disabledInput, setDisabledInput] = React.useState(false);
+
+  const setInitialState = () => {
+      setDescription('');
+      setAmount(0);
+  };
 
   const addIncomeExpense = () => {
       if (description.length === 0 || amount === 0){
-          showSimpleMessage('Uyarı','Boş alan bırakmayınız.', 'success', {floating:true})
+          showSimpleMessage('Uyarı','Boş alan bırakmayınız.', 'warning', {floating:true})
+      }else {
+          setDisabledInput(true);
+          SqliteHelper.inserIncome({date, type, description, amount})
+              .then(result => {
+                  if(result.insertId){
+                      setInitialState();
+                      setDisabledInput(false);
+                      showSimpleMessage('Başarılı','Eklendi!', 'success', {floating:true})
+                  }
+              });
       }
   };
 
@@ -48,11 +65,12 @@ const AddIncomeExpense = () => {
       <View style={styles.root}>
 
         <DatePicker
+            disabled={disabledInput}
             style={{width: 200, marginTop: 24}}
             date={date}
             mode="date"
             placeholder="select date"
-            format="YYYY-MM-DD"
+            format="DD.MM.YYYY"
             confirmBtnText="Confirm"
             cancelBtnText="Cancel"
             androidMode='spinner'
@@ -70,6 +88,7 @@ const AddIncomeExpense = () => {
             onDateChange={(date) => {setDate(date)}}
         />
           <Picker
+              enabled={!disabledInput}
               selectedValue={type}
               style={{height: 50, width: 200}}
               onValueChange={(itemValue, itemIndex) => setType(itemValue)}>
@@ -78,20 +97,25 @@ const AddIncomeExpense = () => {
           </Picker>
 
           <TextInput
+              editable={!disabledInput}
               placeholder= 'Miktar'
               onChangeText={(text) => setAmount(text)}
               style={{height: 50, width: 200, borderWidth:0.5}}
-              keyboardType={'decimal-pad'}
+              keyboardType={'numeric'}
+              value={amount}
           />
 
           <TextInput
+              editable={!disabledInput}
               placeholder='Açıklama'
+              value={description}
               onChangeText={(text) => setDescription(text)}
               multiline={true}
               style={{height: 100, width: 200, borderWidth:0.5, marginTop:8, textAlignVertical: 'top', marginBottom:8}}
           />
 
           <Button
+              disabled={disabledInput}
               onPress={addIncomeExpense}
               title={'KAYDET'}
               style={{height: 50, width: 200}}

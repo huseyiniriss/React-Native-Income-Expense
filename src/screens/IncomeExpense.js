@@ -9,27 +9,37 @@ import {
 import Icon from 'react-native-ionicons'
 import {Navigation} from 'react-native-navigation'
 import moment from "moment";
+import SqliteHelper from '../../util/SqliteHelper'
+
 
 const IncomeExpense = () => {
 
     const months = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
-    const [date , setDates] = React.useState([]);
-    const [currentDate, setCurrentDate] = React.useState({month:new Date().getMonth(), year:new Date().getFullYear()});
+    const [date, setDates] = React.useState([]);
+    const [currentDate, setCurrentDate] = React.useState({
+        month: moment().format('MM'),
+        year: moment().format('YYYY')
+    });
 
     useEffect(() => {
-        setDates(getIncomeExpenseData(currentDate.month,currentDate.year));
-    }, [currentDate]);
+        SqliteHelper.getData(currentDate.month, currentDate.year.toString()).then(result => setDates(getIncomeExpenseData(currentDate.month, currentDate.year, result.data)));
+    }, [SqliteHelper.getData(currentDate.month, currentDate.year.toString())]);
 
-
-    const getIncomeExpenseData = (month, year) => {
-        var date = new Date(Date.UTC(year, month, 1));
-        var days = [];
-        while (date.getMonth() === month) {
-            days.push({date: moment(new Date(date)).format('DD.MM.YYYY'), income:Math.floor(Math.random() * 50), expense:Math.floor(Math.random() * 50)});
-            date.setDate(date.getDate() + 1);
+    const getIncomeExpenseData = (month, year, data) => {
+        var daysInMonth = moment(year+'-'+month, "YYYY-MM").daysInMonth();
+        var arrDays = [];
+        while(daysInMonth) {
+            let day = daysInMonth < 10 ? '0'+daysInMonth : daysInMonth;
+            arrDays.push({
+                date: day+'.'+month+'.'+year,
+                income: 0,
+                expense: 0
+            });
+            daysInMonth--;
         }
-        return days;
+        return arrDays.map(x => Object.assign(x, data.find(y => y.date === x.date))).reverse();
     };
+
 
     const openDetailScreen = (index) => {
         Navigation.push('navigation.IncomeExpense', {
@@ -49,14 +59,15 @@ const IncomeExpense = () => {
         });
     };
 
-    const List = ({item , index}) => {
+    const List = ({item, index}) => {
         return (
-            <View style={{flexDirection:'row',flex: 1}}>
-                <Text style={[styles.item, {flex:3.5,borderRightWidth:0.5}]}>{item.date}</Text>
-                <Text style={[styles.item, {flex:2.5,borderRightWidth:0.5}]}>{item.income}</Text>
-                <Text style={[styles.item, {flex:2.5,borderRightWidth:0.5}]}>{item.expense}</Text>
-                <TouchableOpacity style={[styles.item, {flex:1.5, alignItems:'center'}]} onPress={()=>openDetailScreen(index)} >
-                    <Icon  name="arrow-dropright-circle" style={{fontSize:18}} />
+            <View style={{flexDirection: 'row', flex: 1}}>
+                <Text style={[styles.item, {flex: 3.5, borderRightWidth: 0.5}]}>{item.date}</Text>
+                <Text style={[styles.item, {flex: 2.5, borderRightWidth: 0.5}]}>{item.income}</Text>
+                <Text style={[styles.item, {flex: 2.5, borderRightWidth: 0.5}]}>{item.expense}</Text>
+                <TouchableOpacity style={[styles.item, {flex: 1.5, alignItems: 'center'}]}
+                                  onPress={() => openDetailScreen(index)}>
+                    <Icon name="arrow-dropright-circle" style={{fontSize: 18}}/>
                 </TouchableOpacity>
             </View>
         );
@@ -64,52 +75,49 @@ const IncomeExpense = () => {
 
 
     const getMontIncomeExpense = direction => {
-        let month;
-        let year;
+        let month, year;
         if (direction === 0) {
-            if (currentDate.month === 0) {
-                month = 11;
-                year = currentDate.year - 1;
-            } else {
-                month = currentDate.month - 1;
-                year = currentDate.year;
-            }
+           if (parseInt(currentDate.month) === 1){
+               month = '12';
+               year = (parseInt(currentDate.year) - 1).toString();
+           } else {
+               month = parseInt(currentDate.month) - 1 < 10 ? '0'+(parseInt(currentDate.month) - 1) : (parseInt(currentDate.month) - 1).toString();
+               year = currentDate.year;
+           }
         } else {
-            if (currentDate.month === 11) {
-                month = 0;
-                year = currentDate.year + 1;
+            if (parseInt(currentDate.month) === 12){
+                month = '01';
+                year = (parseInt(currentDate.year) + 1).toString();
             } else {
-                month = currentDate.month + 1;
+                month = parseInt(currentDate.month) + 1 < 10 ? '0'+(parseInt(currentDate.month) + 1) : (parseInt(currentDate.month) + 1).toString();
                 year = currentDate.year;
             }
-
         }
-        setCurrentDate({month, year});
-
+        setCurrentDate({month,year});
     };
 
     return (
         <View style={styles.root}>
             <View style={styles.topbar}>
-                <TouchableOpacity  onPress={()=>getMontIncomeExpense(0)} >
-                    <Icon name="arrow-back" style={{color:'#fff'}} />
+                <TouchableOpacity onPress={() => getMontIncomeExpense(0)}>
+                    <Icon name="arrow-back" style={{color: '#fff'}}/>
                 </TouchableOpacity>
 
                 <View style={{alignItems: 'center'}}>
-                    <Text style={{fontSize:18,color:'#fff'}}>{currentDate.year}</Text>
-                    <Text style={{fontSize:14,color:'#fff'}}>{months[currentDate.month]}</Text>
+                    <Text style={{fontSize: 18, color: '#fff'}}>{currentDate.year}</Text>
+                    <Text style={{fontSize: 14, color: '#fff'}}>{months[parseInt(currentDate.month)-1]}</Text>
                 </View>
 
-                <TouchableOpacity  onPress={()=>getMontIncomeExpense(1)} >
-                    <Icon name="arrow-forward" style={{color:'#fff'}} />
+                <TouchableOpacity onPress={() => getMontIncomeExpense(1)}>
+                    <Icon name="arrow-forward" style={{color: '#fff'}}/>
                 </TouchableOpacity>
             </View>
 
-            <View style={{flexDirection: 'row', backgroundColor:'#dddddd'}}>
-                <Text style={[styles.item, {flex:3.5,borderRightWidth:0.5}]}>Tarih</Text>
-                <Text style={[styles.item, {flex:2.5,borderRightWidth:0.5}]}>Gelir</Text>
-                <Text style={[styles.item, {flex:2.5,borderRightWidth:0.5}]}>Gider</Text>
-                <Text style={[styles.item, {flex:1.5}]}>Detay</Text>
+            <View style={{flexDirection: 'row', backgroundColor: '#dddddd'}}>
+                <Text style={[styles.item, {flex: 3.5, borderRightWidth: 0.5}]}>Tarih</Text>
+                <Text style={[styles.item, {flex: 2.5, borderRightWidth: 0.5}]}>Gelir</Text>
+                <Text style={[styles.item, {flex: 2.5, borderRightWidth: 0.5}]}>Gider</Text>
+                <Text style={[styles.item, {flex: 1.5}]}>Detay</Text>
             </View>
 
             <FlatList
@@ -125,17 +133,17 @@ const IncomeExpense = () => {
 const styles = StyleSheet.create({
     root: {
         flex: 1,
-        backgroundColor:'#fff'
+        backgroundColor: '#fff'
     },
     topbar: {
         flexDirection: 'row',
-        alignItems:'center',
-        justifyContent:'space-evenly',
-        height:50,
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        height: 50,
         backgroundColor: '#075E54'
     },
     item: {
-        textAlign:'center',
+        textAlign: 'center',
         borderBottomWidth: 0.5,
         padding: 4,
         fontSize: 14,

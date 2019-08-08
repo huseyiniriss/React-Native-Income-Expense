@@ -15,6 +15,8 @@ import com.reactnativenavigation.react.ReactGateway;
 import java.util.Arrays;
 import java.util.List;
 
+import org.pgsqlite.SQLitePluginPackage;
+
 public class MainApplication extends NavigationApplication {
 
     @Override
@@ -34,10 +36,8 @@ public class MainApplication extends NavigationApplication {
     }
 
     protected List<ReactPackage> getPackages() {
-        // Add additional packages you require here
-        // No need to add RnnPackage and MainReactPackage
         return Arrays.<ReactPackage>asList(
-            // eg. new VectorIconsPackage()
+            new SQLitePluginPackage()
         );
     }
 
