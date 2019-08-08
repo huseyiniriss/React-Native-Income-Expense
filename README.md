@@ -17,6 +17,9 @@ react-native-ionicons [Here](https://github.com/arniu/react-native-ionicons)<br 
 react-native-datepicker [Here](https://github.com/xgfe/react-native-datepicker)<br />
 moment.js [Here](https://github.com/moment/moment)<br />
 react-native-flash-message [Here](https://github.com/lucasferreira/react-native-flash-message)<br />
+sqlite-js-wrapper [Here](https://github.com/skuzoluk/sqlite-js-wrapper)<br />
+react-native-sqlite-storage [Here](https://github.com/andpor/react-native-sqlite-storage)<br />
+
 
 ## Screenshots
 
