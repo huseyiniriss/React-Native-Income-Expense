@@ -12,10 +12,11 @@ npm start
 
 ## Used Libraries
 
-wix react native navigation V3 [Here](https://github.com/wix/react-native-navigation/tree/v3)<br />
-react-native-ionicons [Here](https://www.npmjs.com/package/react-native-ionicons)<br />
+wix/react-native-navigation V3 [Here](https://github.com/wix/react-native-navigation/tree/v3)<br />
+react-native-ionicons [Here](https://github.com/arniu/react-native-ionicons)<br />
 react-native-datepicker [Here](https://github.com/xgfe/react-native-datepicker)<br />
 moment.js [Here](https://github.com/moment/moment)<br />
+react-native-flash-message [Here](https://github.com/lucasferreira/react-native-flash-message)<br />
 
 ## Screenshots
 
