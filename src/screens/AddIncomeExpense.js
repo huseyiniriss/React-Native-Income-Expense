@@ -1,11 +1,3 @@
-/**
- * Sample React Native AddIncomeExpense
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
 import React, {Fragment} from 'react';
 import {
     SafeAreaView,
@@ -39,7 +31,7 @@ const AddIncomeExpense = () => {
           showSimpleMessage('Uyarı','Boş alan bırakmayınız.', 'warning', {floating:true})
       }else {
           setDisabledInput(true);
-          SqliteHelper.inserIncome({date, type, description, amount})
+          SqliteHelper.insertIncome({date, type, description, amount})
               .then(result => {
                   if(result.insertId){
                       setInitialState();

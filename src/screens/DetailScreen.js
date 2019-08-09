@@ -1,13 +1,19 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import {
     View,
     StyleSheet,
     FlatList,
     Text,
 } from 'react-native';
+import SqliteHelper from '../../util/SqliteHelper'
 
-const IncomeExpense = () => {
+const IncomeExpense = props => {
 
+    const [data, setData] = React.useState([]);
+
+    useEffect(() => {
+        SqliteHelper.getDetailData(props.date).then(result => setData(result.data));
+    },[]);
 
     const ListItem = (props) => {
         return (
@@ -21,12 +27,13 @@ const IncomeExpense = () => {
 
     return (
         <View style={styles.root}>
+            <View style={{flexDirection:'row', backgroundColor: '#dddddd'}}>
+                <Text style={[styles.item, {flex:2,borderRightWidth:0.5}]}>Tur</Text>
+                <Text style={[styles.item, {flex:6,borderRightWidth:0.5}]}>Aciklama</Text>
+                <Text style={[styles.item, {flex:2}]}>Fiyat</Text>
+            </View>
             <FlatList
-                data={[
-                    {type: 'Gelir', description:'Kira', amount:'6'},
-                    {type: 'Gelir', description:'Kira', amount:'6'},
-                    {type: 'Gelir', description:'Kira', amount:'6'},
-                ]}
+                data={data}
                 renderItem={({item}, i) => <ListItem data={item} key={i} />}
             />
         </View>

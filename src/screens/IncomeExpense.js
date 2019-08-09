@@ -46,7 +46,7 @@ const IncomeExpense = () => {
             component: {
                 name: 'navigation.DetailScreen',
                 passProps: {
-                    text: 'data'
+                    date: date[index].date
                 },
                 options: {
                     topBar: {
