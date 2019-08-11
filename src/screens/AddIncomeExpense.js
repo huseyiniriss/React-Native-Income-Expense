@@ -1,17 +1,19 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Button,
-  TextInput,
-  Picker,
+  Button, Picker, StyleSheet, TextInput, View,
 } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import moment from 'moment';
-import FlashMessage, { showMessage, hideMessage } from 'react-native-flash-message';
+import FlashMessage, { showMessage } from 'react-native-flash-message';
 import SqliteHelper from '../../util/SqliteHelper';
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+  },
+});
 
 const AddIncomeExpense = () => {
   const [date, setDate] = React.useState(moment().format('DD.MM.YYYY'));
@@ -23,6 +25,17 @@ const AddIncomeExpense = () => {
   const setInitialState = () => {
     setDescription('');
     setAmount(0);
+  };
+
+  const showSimpleMessage = (title, msg, type = 'default', props = {}) => {
+    const message = {
+      message: title,
+      description: msg,
+      icon: { icon: 'auto', position: 'left' },
+      type,
+      ...props,
+    };
+    showMessage(message);
   };
 
   const addIncomeExpense = () => {
@@ -41,17 +54,6 @@ const AddIncomeExpense = () => {
           }
         });
     }
-  };
-
-  const showSimpleMessage = (title, msg, type = 'default', props = {}) => {
-    const message = {
-      message: title,
-      description: msg,
-      icon: { icon: 'auto', position: 'left' },
-      type,
-      ...props,
-    };
-    showMessage(message);
   };
 
   return (
@@ -84,7 +86,7 @@ const AddIncomeExpense = () => {
         enabled={!disabledInput}
         selectedValue={type}
         style={{ height: 50, width: 200 }}
-        onValueChange={(itemValue, itemIndex) => setType(itemValue)}
+        onValueChange={(itemValue) => setType(itemValue)}
       >
         <Picker.Item label="Gelir" value={1} />
         <Picker.Item label="Gider" value={0} />
@@ -121,13 +123,5 @@ const AddIncomeExpense = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-  },
-});
 
 export default AddIncomeExpense;

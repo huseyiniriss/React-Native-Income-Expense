@@ -1,12 +1,22 @@
 import React, { useEffect } from 'react';
 import {
-  View,
-  StyleSheet,
-  FlatList,
-  Text, TouchableOpacity,
+  FlatList, StyleSheet, Text, TouchableOpacity, View,
 } from 'react-native';
 import Icon from 'react-native-ionicons';
 import SqliteHelper from '../../util/SqliteHelper';
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  item: {
+    textAlign: 'center',
+    borderBottomWidth: 0.5,
+    padding: 4,
+    fontSize: 14,
+  },
+});
 
 const IncomeExpense = (props) => {
   const [data, setData] = React.useState([]);
@@ -21,14 +31,16 @@ const IncomeExpense = (props) => {
     SqliteHelper.getDetailData(props.date).then((result) => setData(result.data));
   }, []);
 
-  const ListItem = (props) => (
+  const ListItem = ({ data }) => (
     <View style={{ flexDirection: 'row', flex: 1 }}>
-      <Text style={[styles.item, { flex: 2, borderRightWidth: 0.5 }]}>{props.data.type}</Text>
-      <Text style={[styles.item, { flex: 4.5, borderRightWidth: 0.5 }]}>{props.data.description}</Text>
-      <Text style={[styles.item, { flex: 2, borderRightWidth: 0.5 }]}>{props.data.amount}</Text>
+      <Text style={[styles.item, { flex: 2, borderRightWidth: 0.5 }]}>{data.type}</Text>
+      <Text style={[styles.item, { flex: 4.5, borderRightWidth: 0.5 }]}>
+        {data.description}
+      </Text>
+      <Text style={[styles.item, { flex: 2, borderRightWidth: 0.5 }]}>{data.amount}</Text>
       <TouchableOpacity
         style={[styles.item, { flex: 1.5, alignItems: 'center' }]}
-        onPress={() => deleteIncomeExpense(props.data.id)}
+        onPress={() => deleteIncomeExpense(data.id)}
       >
         <Icon name="trash" style={{ fontSize: 18 }} />
       </TouchableOpacity>
@@ -50,18 +62,5 @@ const IncomeExpense = (props) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  item: {
-    textAlign: 'center',
-    borderBottomWidth: 0.5,
-    padding: 4,
-    fontSize: 14,
-  },
-});
 
 export default IncomeExpense;

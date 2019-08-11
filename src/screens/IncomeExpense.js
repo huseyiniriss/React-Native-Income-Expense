@@ -1,15 +1,31 @@
 import React, { useEffect } from 'react';
 import {
-  View,
-  StyleSheet,
-  FlatList,
-  Text,
-  TouchableOpacity,
+  FlatList, StyleSheet, Text, TouchableOpacity, View,
 } from 'react-native';
 import Icon from 'react-native-ionicons';
 import { Navigation } from 'react-native-navigation';
 import moment from 'moment';
 import SqliteHelper from '../../util/SqliteHelper';
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  topbar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    height: 50,
+    backgroundColor: '#075E54',
+  },
+  item: {
+    textAlign: 'center',
+    borderBottomWidth: 0.5,
+    padding: 4,
+    fontSize: 14,
+  },
+});
 
 
 const IncomeExpense = () => {
@@ -19,10 +35,6 @@ const IncomeExpense = () => {
     month: moment().format('MM'),
     year: moment().format('YYYY'),
   });
-
-  useEffect(() => {
-    SqliteHelper.getData(currentDate.month, currentDate.year.toString()).then((result) => setDates(getIncomeExpenseData(currentDate.month, currentDate.year, result.data)));
-  }, [SqliteHelper.getData(currentDate.month, currentDate.year.toString())]);
 
   const getIncomeExpenseData = (month, year, data) => {
     let daysInMonth = moment(`${year}-${month}`, 'YYYY-MM').daysInMonth();
@@ -40,6 +52,12 @@ const IncomeExpense = () => {
     return arrDays.map((x) => Object.assign(x, data.find((y) => y.date === x.date))).reverse();
   };
 
+  useEffect(() => {
+    SqliteHelper.getData(currentDate.month, currentDate.year.toString())
+      .then((result) => {
+        setDates(getIncomeExpenseData(currentDate.month, currentDate.year, result.data));
+      });
+  }, [SqliteHelper.getData(currentDate.month, currentDate.year.toString())]);
 
   const openDetailScreen = (index) => {
     Navigation.push('navigation.IncomeExpense', {
@@ -142,25 +160,5 @@ const IncomeExpense = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  topbar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    height: 50,
-    backgroundColor: '#075E54',
-  },
-  item: {
-    textAlign: 'center',
-    borderBottomWidth: 0.5,
-    padding: 4,
-    fontSize: 14,
-  },
-});
 
 export default IncomeExpense;
